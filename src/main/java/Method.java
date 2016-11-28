@@ -73,4 +73,13 @@ public class Method {
         }
         return sum/data.size();
     }
+
+    public static Double standardDeviation(List<Double> data) {
+        Double average = average(data);
+        Double sum = 0.0;
+        for (Double d : data) {
+            sum += Math.pow(d - average, 2);
+        }
+        return Math.sqrt(sum/(data.size()-1));
+    }
 }
