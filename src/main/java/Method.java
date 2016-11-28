@@ -13,6 +13,15 @@ public class Method {
         ts = getData("C:\\1.csv");
         System.out.println(ts);
         System.out.println(interquartileDistanceMethod(ts));
+        System.out.println(irwinMethod(ts));
+
+        for (int i : interquartileDistanceMethod(ts)) {
+            System.out.print(ts.get(i) + " ");
+        }
+        System.out.println();
+        for (int i : irwinMethod(ts)) {
+            System.out.print(ts.get(i) + " ");
+        }
     }
 
     public static List<Double> getData(String filePath) {
@@ -81,5 +90,19 @@ public class Method {
             sum += Math.pow(d - average, 2);
         }
         return Math.sqrt(sum/(data.size()-1));
+    }
+
+    public static List<Integer> irwinMethod(List<Double> ts) {
+        List<Integer> outliers = new ArrayList<Integer>();
+        Double standardDeviation = standardDeviation(ts);
+        Double criterion;
+        for (int i=1; i < ts.size(); i++) {
+            criterion = Math.abs(ts.get(i)-ts.get(i-1)) / standardDeviation;
+            if (criterion > 2.95) {
+                outliers.add(i);
+            }
+
+        }
+        return outliers;
     }
 }
