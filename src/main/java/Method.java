@@ -38,7 +38,7 @@ public class Method {
         return ts;
     }
 
-    
+
     public static List<Integer> interquartileDistanceMethod(List<Double> ts) {
         List<Double> sortedTs = new ArrayList<>(ts);
 
@@ -65,5 +65,12 @@ public class Method {
             }
         }
         return outliers;
+    }
+    public static Double average(List<Double> data) {
+        Double sum = 0.0;
+        for (Double d : data) {
+            sum += d;
+        }
+        return sum/data.size();
     }
 }
