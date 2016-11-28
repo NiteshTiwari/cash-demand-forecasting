@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -10,6 +12,7 @@ public class Method {
         List<Double> ts = new ArrayList<Double>();
         ts = getData("C:\\1.csv");
         System.out.println(ts);
+        System.out.println(interquartileDistanceMethod(ts));
     }
 
     public static List<Double> getData(String filePath) {
@@ -33,5 +36,34 @@ public class Method {
             System.out.println("Произошла ошика ввода-вывода");
         }
         return ts;
+    }
+
+    
+    public static List<Integer> interquartileDistanceMethod(List<Double> ts) {
+        List<Double> sortedTs = new ArrayList<>(ts);
+
+        Collections.sort(sortedTs, new Comparator<Double>() {
+            @Override
+            public int compare(Double d1, Double d2) {
+                return Double.compare(d1, d2);
+            }
+        });
+
+        int n = sortedTs.size();
+        int medianRank = (1 + n) / 2;
+        int lowerQuartileRank = (1 + medianRank) / 2;
+        int upperQuartileRank = n + 1 - lowerQuartileRank;
+
+        Double lowerQuartile = sortedTs.get(lowerQuartileRank-1);
+        Double upperQuartile = sortedTs.get(upperQuartileRank-1);
+
+        List<Integer> outliers = new ArrayList<Integer>();
+
+        for (int i=0; i<ts.size(); i++) {
+            if (ts.get(i) > upperQuartile + 1.5*(upperQuartile - lowerQuartile) || ts.get(i) < lowerQuartile - 1.5*(upperQuartile - lowerQuartile)) {
+                outliers.add(i);
+            }
+        }
+        return outliers;
     }
 }
